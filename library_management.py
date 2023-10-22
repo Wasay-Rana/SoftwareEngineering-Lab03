@@ -85,10 +85,6 @@ class Library:
             for book in self.books:
                 writer.writerow([book.title, book.isbn, book.is_available])
 
-class UserLibrary:
-    def __init__(self, library):
-        self.library = library
-
 # Main program
 library = Library()
 library.load_books_from_csv('library_books.csv')
