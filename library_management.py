@@ -7,6 +7,7 @@ class Book:
         self.isbn = isbn
         self.is_available = True
 
+
     def __str__(self):
         return self.title
 
@@ -16,10 +17,13 @@ class Book:
     def mark_as_available(self):
         self.is_available = True
 
+
 class User:
     def __init__(self, username):
         self.username = username
         self.borrowed_books = []
+
+
 
     def __str__(self):
         return f"Welcome, {self.username}!"
@@ -89,6 +93,7 @@ class UserLibrary:
 library = Library()
 library.load_books_from_csv('library_books.csv')
 
+
 while True:
     username = input("Enter your username (or 'exit' to quit): ")
     if username.lower() == 'exit':
@@ -144,3 +149,44 @@ while True:
             exit()
         else:
             print("Invalid choice. Please try again.")
+
+user = None
+
+while True:
+    if user is None:
+        username = input("Enter your username to create an account: ")
+        user = User(username)
+        print(user)
+
+    print("\nMenu:")
+    print("1. Display Available Books")
+    print("2. Borrow a Book")
+    print("3. Return a Book")
+    print("4. Exit")
+    
+    choice = input("Enter your choice: ")
+
+    if choice == "1":
+        library.display_books()
+    elif choice == "2":
+        book_title = input("Enter the title of the book you want to borrow: ")
+        book = library.borrow_book(book_title)
+        if book:
+            due_date = datetime.datetime.now() + datetime.timedelta(days=5)
+            print(f"You have borrowed '{book.title}'. Please return it by {due_date.strftime('%Y-%m-%d %H:%M:%S')}.")
+        else:
+            print("Book not available for borrowing or invalid title.")
+    elif choice == "3":
+        book_title = input("Enter the title of the book you want to return: ")
+        book = library.return_book(book_title)
+        if book:
+            print(f"You have returned '{book.title}'.")
+        else:
+            print("Invalid title or book already available in the library.")
+    elif choice == "4":
+        library.save_books_to_csv('library_books.csv')  
+        print("Jazak Allah, It was nice having you in the library management system. Goodbye!")
+        break
+    else:
+        print("Invalid choice. Please try again.")
+
